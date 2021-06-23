@@ -12,10 +12,11 @@ from PIL import Image
 from torch.utils.data import Dataset
 
 class FlowerDataset(Dataset):
-    def __init__(self, root_dir, transform):
+    def __init__(self, root_dir, transform=None):
         '''
         获取数据集的路径、预处理的方法
         '''
+        self.cls_num = 102
         self.root_dir = root_dir
         self.transform = transform
         self.img_info = []  # [(path,label), ... , ]
@@ -29,9 +30,10 @@ class FlowerDataset(Dataset):
         :param index:
         :return:
         '''
+        # print("__getitem__() is called.")  ## ## ==> 当调用 实例对象[] 加索引时，就会自动调用此函数
         path_img, label = self.img_info[index]
         img = Image.open(path_img).convert('RGB')
-        if self.transform in not None:
+        if self.transform is not None:
             img = self.transform(img)
         return img, label
 
@@ -39,7 +41,12 @@ class FlowerDataset(Dataset):
         '''
         返回数据集长度
         '''
-        len(self.img_info)
+        # print("__len__() is called.")  ## ==> 当调用len(实例对象)时，就会自动调用此函数
+        return len(self.img_info)
+
+    def __str__(self):
+        # print("__str__() is called.")  ## ==> 当调用 实例对象 时，就会自动调用此函数
+        return "Used for description."
 
     def _get_img_info(self):
         '''
@@ -47,18 +54,27 @@ class FlowerDataset(Dataset):
         path,label
         '''
         names_imgs = os.listdir(self.root_dir)
-        names_imgs = [n for n in names_imgs if n.endwith('.jpg')]
+        names_imgs = [n for n in names_imgs if n.endswith(".jpg")]
 
         # 读取mat形式label
         label_file = "imagelabels.mat" # hard code
         path_label_file = os.path.join(self.root_dir, "..", label_file)
         from scipy.io import loadmat
-        label_array = loadmat(path_label_file)['label'].squeeze()
+        label_array = loadmat(path_label_file)['labels'].squeeze()
         self.label_array = label_array
 
         # 匹配label
         idx_imgs = [int(n[6:11]) for n in names_imgs]
 
         path_imgs = [os.path.join(self.root_dir,n) for n in names_imgs]
-        self.img_info = [(p,int(label_array[idx-1]-1)) for p, idx in zip(path_imgs, index_imgs)]
+        self.img_info = [(p,int(label_array[idx-1]-1)) for p, idx in zip(path_imgs, idx_imgs)]
 
+if __name__ == "__main__":
+    
+    root_dir = r"/home/elimen/Data/deepshare/Classification/102flowers/train"
+    test_dataset = FlowerDataset(root_dir)
+
+    print(test_dataset)
+    print(test_dataset[1])
+    print(len(test_dataset))
+    print(next(iter(test_dataset)))
