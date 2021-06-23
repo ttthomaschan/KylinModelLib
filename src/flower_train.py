@@ -17,6 +17,7 @@ from torch.utils.data import DataLoader
 from torchvision.models import resnet18, resnet50
 import torch.nn as nn
 import torch.optim as optim
+from tools.model_trainer import ModelTrainer
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
