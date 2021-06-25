@@ -1,0 +1,13 @@
+To check list:
+#1
+1) sys.path
+2) arg.parse
+3) logging
+
+#2
+1) 在分类任务中，使用Focal Loss， 一定要配合bias初始化， bias=-log((1-pi)/pi).
+否则Focal Loss没有效果， mAP提升非常小？  （Paper中有提及需要初始化bias，并且pi=0.01）
+2） 如何稳定训练Focal Loss？
+3） Softmax 做20分类 ==> 20个 Sigmoid 做二分类
+
+
