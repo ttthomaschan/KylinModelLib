@@ -18,6 +18,8 @@ class FlowerDataset(Dataset):
         '''
         self.cls_num = 102
         self.root_dir = root_dir
+        # assert os.path.isdir(root_dir), "got invalid directory:{}".format(root_dir)
+
         self.transform = transform
         self.img_info = []  # [(path,label), ... , ]
         self.label_array = None
@@ -35,6 +37,9 @@ class FlowerDataset(Dataset):
         img = Image.open(path_img).convert('RGB')
         if self.transform is not None:
             img = self.transform(img)
+        else:
+            # PIL Image -> np array -> tensor & (H,W,C) -> (C,H,W)
+            img = torch.from_numpy(np.asarray(img,dtype=np.float)).permute((2,0,1)).contiguous()
         return img, label
 
     def __len__(self):
@@ -42,6 +47,8 @@ class FlowerDataset(Dataset):
         返回数据集长度
         '''
         # print("__len__() is called.")  ## ==> 当调用len(实例对象)时，就会自动调用此函数
+        if len(self.img_info) == 0:
+            raise Exception("\ndata_dir:{} is an empty dir, please checkout path to images".format(self.root_dir))
         return len(self.img_info)
 
     def __str__(self):

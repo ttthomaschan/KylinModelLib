@@ -1,13 +1,18 @@
 To check list:
 #1
-1) sys.path
-2) arg.parse
-3) logging
+1) sys.path: python的搜索模块的路径集，是一个list。通常将项目根目录添加进去，防止服务器上运行时，找不到自定义的包。
+2) arg.parse: argparse模块可以让人轻松编写用户友好的命令行接口。它能让代码从命令行中接收参数，避免反复修改代码（.py）。在服务器上运行代码时，十分常用。
+3) logging: python的内置模块，提供了记录程序运行情况的日志功能，它将想要的信息保存到硬盘。
+4）label错位，分类任务中使用交叉熵损失函数，label需要long型，而且需要从0开始计算。
 
 #2
 1) 在分类任务中，使用Focal Loss， 一定要配合bias初始化， bias=-log((1-pi)/pi).
 否则Focal Loss没有效果， mAP提升非常小？  （Paper中有提及需要初始化bias，并且pi=0.01）
 2） 如何稳定训练Focal Loss？
 3） Softmax 做20分类 ==> 20个 Sigmoid 做二分类
+
+#3
+1）config: easydict/addict库
+
 
 
