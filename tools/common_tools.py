@@ -9,9 +9,12 @@
 import os
 import numpy as np
 import torch
+import torch.nn as nn
 import random
 import matplotlib.pyplot as plt
 import logging
+from datetime import datetime
+from torchvision.models import resnet18
 
 
 def set_up(seed=12345):
@@ -151,7 +154,59 @@ def check_data_dir(path_tmp):
 
 def make_logger(out_dir):
     '''
-    在 out_dir 文件夹下以
+    在 out_dir 文件夹下以当前时间命名，创建日志文件夹，并创建logger用于记录信息
     :param out_dir:
     :return:
     '''
+    now_time = datetime.now()
+    time_str = datetime.strftime(now_time, '%m-%d_%H-%M')
+    log_dir = os.path.join(out_dir, time_str)
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+    # 创建logger
+    path_log = os.path.join(log_dir, 'log.log')
+    logger = Logger(path_log)
+    logger = logger.init_logger()
+    return logger, log_dir
+
+def get_model(cfg, cls_num, logger):
+    '''
+    创建模型
+    :param cfg:
+    :param cls_num:
+    :param logger:
+    :return:
+    '''
+    if cfg.model_name == "resnet18":
+        model = resnet18()
+        if os.path.exists(cfg.path_resnet18):
+            pretrained_state_dict = torch.load(cfg.path_resnet18, map_location="cpu")
+            model.load_state_dict(pretrained_state_dict) # load pretrain model
+            logger.info("Load pretrained model.")
+        # 修改最后一层
+        num_ftrs = model.fc.in_features
+        model.fc = nn.Linear(num_ftrs, cls_num)  # 102
+
+    elif cfg.model_name == "vgg16_bn":
+        model = vgg16_bn()
+        if os.path.exists(cfg.path_vgg16bn):
+            pretrained_state_dict = torch.load(cfg.path_vgg16bn, map_location="cpu")
+            model.load_state_dict(pretrained_state_dict)
+            logger.info("Load pretrained model.")
+        # 替换网络层
+        in_feat_num = model.classifier[6].in_features
+        model.classfier[6] = nn.Linear(in_feat_num, cls_num)
+
+    elif cfg.model_name == "se_resnet50":
+        model = se_resnet50()
+        if os.path.exists(cfg.path_se_res50):
+            model.load_state_dict(torch.load(cfg.path_se_res50))
+            logger.info("Load pretrained model.")
+        in_feat_num = model.fc.in_features
+        model.fc = nn.Linear(in_feat_num, cls_num)
+
+    else:
+        raise Exception("Invalid model name. got {}".format(cfg.model_name))
+
+    return model
+
