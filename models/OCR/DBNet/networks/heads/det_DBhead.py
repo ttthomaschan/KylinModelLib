@@ -14,6 +14,7 @@ from torch import nn
 
 class Head(nn.Module):
     def __init__(self, in_channels):
+        super().__init__()
         self.conv1 = nn.Conv2d(in_channels=in_channels, out_channels=in_channels//4, kernel_size=3, padding=1, bias=False)
         self.conv_bn1 = nn.BatchNorm2d(in_channels//4)
         self.relu = nn.ReLU(inplace=True)
@@ -36,3 +37,36 @@ class Head(nn.Module):
         x = torch.sigmoid(x)
 
         return x
+
+
+class DBHead(nn.Module):
+    def __init__(self, in_channels, k=50):
+        super().__init__()
+        self.k = k
+        self.binarize = Head(in_channels)
+        self.thresh = Head(in_channels)
+        self.binarize.apply(self.weights_init)
+        self.thresh.apply(self.weights_init)
+
+    def weights_init(self, m):
+        classname = m.__class__.__name__
+        if classname.find('Conv') != -1:
+            nn.init.kaiming_normal_(m.weight.data)
+        elif classname.find('BatchNorm') != -1:
+            m.weight.data.fill_(1.)
+            m.bias.data.fill_(1e-4)
+
+    def step_function(self, x, y):
+        return torch.reciprocal(1 + torch.exp(-self.k * (x - y)))
+
+    def forward(self,x):
+        shrink_maps = self.binarize(x)
+        threshold_maps = self.thresh(x)
+        binary_maps = self.step_function(shrink_maps, threshold_maps)
+        y = torch.cat((shrink_maps, threshold_maps, binary_maps), dim=1)
+        return y
+
+
+if __name__ == "__main__":
+    fpn = DBHead(256)
+    print(fpn)
