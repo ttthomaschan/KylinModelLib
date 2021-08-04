@@ -1,5 +1,5 @@
 """
-# @file name  : flower102dataset.py
+# @file name  : det_resnet.py
 # @author     : JLChen
 # @date       : 2021-07
 # @brief      : DBNet backone
