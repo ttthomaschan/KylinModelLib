@@ -50,6 +50,7 @@ class ConvBNACTWithPool(nn.Module):
             self.act = nn.ReLU()
 
     def forward(self, x):
+        x = self.pool(x)
         x = self.conv(x)
         x = self.bn(x)
         if self.act is not None:
@@ -194,4 +195,6 @@ class ResNet(nn.Module):
 
 if __name__ == "__main__":
     net = ResNet(3, 18)
+    x = torch.zeros(1, 3, 640, 640)
+    out = net(x)
     print(net)

@@ -59,7 +59,7 @@ class DBHead(nn.Module):
     def step_function(self, x, y):
         return torch.reciprocal(1 + torch.exp(-self.k * (x - y)))
 
-    def forward(self,x):
+    def forward(self, x):
         shrink_maps = self.binarize(x)
         threshold_maps = self.thresh(x)
         binary_maps = self.step_function(shrink_maps, threshold_maps)
