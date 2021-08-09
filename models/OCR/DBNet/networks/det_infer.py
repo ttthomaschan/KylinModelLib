@@ -140,7 +140,7 @@ if __name__ == '__main__':
             cv2.polylines(img_path, [point], True, color, thickness)
         return img_path
 
-    img_path = "/home/elimen/Data/dbnet_pytorch/test_images/ins_photo/1.中华联合-金旺交强险.jpeg"
+    img_path = "/home/elimen/Data/dbnet_pytorch/test_images/ins_photo/6.太平洋-商业险_皖a6603r.jpeg"
     model_path = "/home/elimen/Data/dbnet_pytorch/checkpoints/ch_det_server_db_res18.pth"
     img = cv2.imread(img_path)
     img_bak = img.copy()
