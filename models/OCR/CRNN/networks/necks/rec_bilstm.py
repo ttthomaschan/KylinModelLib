@@ -57,7 +57,7 @@ class SequenceEncoder(nn.Module):
 
             self.out_channels = self.encoder.out_channels
             self.only_reshape = False
-        
+
     def forward(self, x):
         x = self.encoder_reshape(x)
         if not self.only_reshape:
@@ -65,3 +65,6 @@ class SequenceEncoder(nn.Module):
         return x
 
 
+if __name__ == '__main__':
+    net = SequenceEncoder(10)
+    print(list(net.state_dict().keys()))
