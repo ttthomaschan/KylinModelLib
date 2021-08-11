@@ -147,6 +147,12 @@ if __name__ == '__main__':
     model = DetInfer(model_path)
     box_list, score_list = model.predict(img, is_output_polygon=False)
 
+    for i, box in enumerate(box_list):
+        pt0, pt1, pt2, pt3 = box
+        imgout = img_bak[int(min(pt0[1], pt1[1])) - 4:int(max(pt2[1], pt3[1])) + 4,
+                 int(min(pt0[0], pt3[0])) - 4:int(max(pt1[0], pt2[0])) + 4]
+        cv2.imwrite("./crop_"+str(i)+".jpg", imgout)
+
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = draw_bbox(img, box_list)
     imageres_path = './'

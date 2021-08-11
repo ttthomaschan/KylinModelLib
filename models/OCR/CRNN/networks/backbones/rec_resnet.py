@@ -185,9 +185,13 @@ if __name__ == "__main__":
     device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
     model = ResNet(3, 34)
     model.to(device)
-    # print(model)
+    with open('crnn_ckpt.txt', "w") as f:
+        for k in model.state_dict().keys():
+            f.write(k)
+            f.write("\n")
+    print(model.state_dict().keys())
 
-    state_dict_path = '/home/elimen/Data/dbnet_pytorch/checkpoints/ch_rec_server_crnn_res34.pth'
-    state_dict = torch.load(state_dict_path)
+    # state_dict_path = '/home/elimen/Data/dbnet_pytorch/checkpoints/ch_rec_server_crnn_res34.pth'
+    # state_dict = torch.load(state_dict_path)
     # model.load_state_dict(state_dict['state_dict'])
     print('Model loaded.')

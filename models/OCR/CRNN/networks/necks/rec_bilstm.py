@@ -1,16 +1,15 @@
 # encoding: utf-8
 """
-# @file name  : rec_resnet.py
+# @file name  : rec_bilstm.py
 # @author     : JLChen
 # @date       : 2021-07
-# @brief      : CRNN backone
+# @brief      : CRNN neck
 """
 
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import torch
 from torch import nn
 
 class Im2Seq(nn.Module):
