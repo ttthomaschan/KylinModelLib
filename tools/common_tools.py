@@ -17,14 +17,23 @@ from datetime import datetime
 from torchvision.models import resnet18
 
 
-def set_up(seed=12345):
+def setup_seed(seed=2938):
+    os.environ['PYTHONHASHSEED'] = str(seed)
+
     np.random.seed(seed)
     random.seed(seed)
+
     torch.manual_seed(seed)   # cpu
+
     if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed)
         torch.cuda.manual_seed_all(seed)
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = True    # 训练集变化不大时使训练加速，是固定cudnn最优配置，如卷积算法
+
+def check_dir(path_tmp):
+    assert os.path.exists(path_tmp), \
+        "\n\n路径不存在，当前变量中指定的路径是：\n{}\n请检查相对路径的设置，或者文件是否存在".format(os.path.abspath(path_tmp))
 
 def show_confMat(confusion_mat, classes, set_name, out_dir, epoch=999, verbose=False, figsize=None, perc=False):
     '''
@@ -147,10 +156,6 @@ class Logger(object):
         logger.addHandler(console_handler)
 
         return logger
-
-def check_data_dir(path_tmp):
-    assert os.path.exists(path_tmp), \
-        "\n\n路径不存在，当前变量中指定的路径是：\n{}\n请检查相对路径的设置，或者文件是否存在".format(os.path.abspath(path_tmp))
 
 def make_logger(out_dir):
     '''
