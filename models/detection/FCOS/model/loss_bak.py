@@ -98,7 +98,7 @@ class GenTargets(nn.Module):
         t_off = y[None, :, None] - gt_boxes[..., 1][:, None, :]
         r_off = gt_boxes[..., 2][:, None, :] - x[None, :, None]
         b_off = gt_boxes[..., 3][:, None, :] - y[None, :, None]
-        ltrb_off = torch.stack([l_off, t_off, r_off, b_off], dim=-1)  # [batch_size,h*w,m,4]
+        ltrb_off = torch.stack([l_off, t_off, r_off, b_off], dim=-1)  # [batch_size,h*w,m,4], m是gt_boxes数量
 
         areas = (ltrb_off[..., 0] + ltrb_off[..., 2]) * (ltrb_off[..., 1] + ltrb_off[..., 3])  # [batch_size,h*w,m]
 
