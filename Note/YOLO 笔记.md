@@ -92,7 +92,7 @@ YOLOv1 输入图像大小固定为 448x448x3，经过24个卷积层（7x7, 3x3, 
 
 **损失函数：**
 
-![](https://gitee.com/jchencp/notepics/raw/master/YOLOv1_loss.png)
+<img src="https://gitee.com/jchencp/notepics/raw/master/YOLOv1_loss.png" style="zoom: 67%;" />
 
 ##### 2.3 推理
 
@@ -111,3 +111,11 @@ YOLOv1 输入图像大小固定为 448x448x3，经过24个卷积层（7x7, 3x3, 
 #### 5. 实际应用
 
 #### 6. 总结
+
+
+
+### YOLO v2
+
+gitee: d5b886f215e73e4fc82eb181f88e760d
+
+![](https://i.loli.net/2021/09/25/hw9UkbOyXe5BRlI.png)
