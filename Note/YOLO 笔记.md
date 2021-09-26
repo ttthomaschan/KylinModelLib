@@ -77,11 +77,11 @@ YOLOv1 输入图像大小固定为 448x448x3，经过24个卷积层（7x7, 3x3, 
 - 训练参数：
 
  	epoches=135
-
+ 	
  	batch size=64
-
+ 	
  	optimizer: momentum=0.9, decay=0.0005
-
+ 	
  	lr schedule: 1e-3(first epoch) --> 1e-2(75 epoches) --> 1e-3(30 epoches) --> 1e-4(30 epoches) 
 
 ​	 dropout=0.5
@@ -118,4 +118,5 @@ YOLOv1 输入图像大小固定为 448x448x3，经过24个卷积层（7x7, 3x3, 
 
 gitee: d5b886f215e73e4fc82eb181f88e760d
 
-![](https://i.loli.net/2021/09/25/hw9UkbOyXe5BRlI.png)
+<img src="https://gitee.com/jchencp/notepics/raw/master/YOLO_v1_v2.png" style="zoom: 67%;" />
+
