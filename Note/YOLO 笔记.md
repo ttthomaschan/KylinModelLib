@@ -67,7 +67,7 @@ $$
 
 ![](https://gitee.com/jchencp/notepics/raw/master/YOLOv1_structure.png)
 
-YOLOv1 输入图像大小固定为 448x448x3，经过24个卷积层（7x7, 3x3, 1x1）提取特征后，特征图大小为 7x7x1024；然后是两个全连接层（4096, 30）。
+YOLOv1 输入图像大小固定为 448x448x3，经过24个卷积层（7x7, 3x3, 1x1）提取特征后，特征图大小为 7x7x1024；然后是两个全连接层（4096, 30）; 整个网络没有使用 BN 层，用了一层  Dropout 层。
 
 ##### 2.2 训练
 
@@ -88,7 +88,20 @@ YOLOv1 输入图像大小固定为 448x448x3，经过24个卷积层（7x7, 3x3, 
 
 **匹配策略：**
 
-​	共用SxSxB(eg. 7x7x2=98)个框，<u>**【具体实现】**</u>
+- 共有SxSxB(eg. 7x7x2=98)个框，<u>**【具体实现】**</u>
+
+![](https://gitee.com/jchencp/notepics/raw/master/YOLOv1_grid.png)
+
+- 如果一个物体的中心点落在了某一个网格中，那么这个网格就负责回归这个物体的位置。
+
+举例：
+
+​	如上图，假设左下角网格坐标为(1,1)，而小狗所在的最小包围框的中心落在网格(2,3)，那么在7x7个网格里，网格(2,3) 负责预测小狗，其他没有物体中心点落下的网格，则不负责预测任何物体。	
+
+- *每个网格(grid cell) 的 B 个预测框初始尺寸如何确定？* (x,y)初始值等于网格中心点，(w,h)有B对，预先设定。
+- 每个网格的B个预测框最后只选定置信度最高的矩形框作为输出。 -- **【YOLO v1最多预测S*S个物体】**
+- (x,y) 是 BBox 的中心坐标，以中心相对于该网格左上角坐标的偏移值（如小狗网格(2,3)的偏移值），使x/y范围属于0到1。
+- (w,h) 基于原图进行归一化（分别除以图像的w和h），同样使得w/h范围属于0到1。
 
 **损失函数：**
 
@@ -119,4 +132,73 @@ YOLOv1 输入图像大小固定为 448x448x3，经过24个卷积层（7x7, 3x3, 
 gitee: d5b886f215e73e4fc82eb181f88e760d
 
 <img src="https://gitee.com/jchencp/notepics/raw/master/YOLO_v1_v2.png" style="zoom: 67%;" />
+
+#### 	摘要
+
+- 使用一系列优化手段（trick），使 YOLO 更快、更健壮。
+- 自适应输入尺寸：通过输入不同的尺寸，进行速度和精度的折中。
+- 提出联合训练：针对 detection 数据集数量少的问题，用已有的 classification 数据集拓展目标检测系统。
+
+#### 1. 介绍
+
+YOLOv2 和 YOLO9000 算法内核相同， 区别是训练方式不同：
+
+- YOLO v2 用 COCO 数据集训练，可以识别80个种类；
+- YOLO 9000 用 COCO + ImageNet 数据集联合训练，可以识别9000多个类别（细粒度分类）。
+
+#### 2. 更好
+
+##### 2.1 Batch Normalization （批归一化）
+
+检测网络中，BN 层成了标配。
+
+YOLO v2 在每个卷积层加了 BN 层，并且去掉了 Dropout 层，mAP 提升了2% (VOC 2007) 。
+
+##### 2.2 High Resolution Classifier （分类网络高分辨率预训练）
+
+检测网络的 backbone 一般会在 ImageNet 上做预训练。
+
+YOLO v1，预训练时输入大小为224x224；
+
+YOLO v2，预训练时输入大小为448x448，在 ImageNet 上训练10个 epoches，再使用检测数据集 COCO 进行微调。 mAP 提升了4% (VOC 2007) 。
+
+##### 2.3 Convolution with Anchor Boxes （ anchor box 替换全连接层）
+
+
+
+##### 2.4 Dimension Clusters （聚类生成anchor的宽和高）
+
+创新点！
+
+Anchor Box 宽高无需人为设定，将训练数据集的矩形框全部抽取出来，用 kmeans 聚类得到先验框的宽高。聚类类别个数需要人为设定，当 k=5, mAP略微提升。
+
+注意：聚类必须定义聚类点（矩形框宽高(w,h)）之间的聚类函数，文中使用如下函数：
+$$
+d(box,centroid) = 1 - IOU(box,centroid)
+$$
+若以（1 - IOU）为距离函数，是否也需要用到(x,y)信息？不需要。
+
+##### 2.5 Direct location prediction （预测绝对位置）
+
+
+
+##### 2.6 Fine-Grained Features （细粒度特征）
+
+
+
+##### 2.7 Multi-Scale Training （多尺度训练）
+
+
+
+#### 3. 更快
+
+提出新的特征提取 backbone 网络 -- Darknet-19。
+
+特点：参数比 VGG-16 更少。
+
+#### 4. 更强
+
+
+
+#### 5. 总结
 
