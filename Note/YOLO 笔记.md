@@ -234,9 +234,19 @@ YOLOv2 中只有卷积层和池化层，所以对于输入图像的尺寸没有�
 
 #### 摘要
 
+- YOLOv3 同时期的 SOTA 目标检测网络是 RetinaNet。
 
+- 在 COCO 数据集上，Titan X 计算：
+
+  ​	YOLO v3：57.9 AP50，51ms；
+
+  ​	RetinaNet：57.5 AP50，198ms。
+
+  
 
 #### 1. 介绍
+
+YOLOv3 相比前作只有较小改动，但性能取得了提升。
 
 
 
@@ -244,9 +254,21 @@ YOLOv2 中只有卷积层和池化层，所以对于输入图像的尺寸没有�
 
 ##### 2.1 检测框预测
 
+
+
 ##### 2.2 分类预测
 
+- 实际应用中，多标签和重叠标签的情况很多。
+
+  Softmax 适用于单一标签；
+
+  Logistic 适用于多标签；
+
+- 分类损失用 BCE loss。
+
 ##### 2.3 多尺度预测
+
+
 
 ##### 2.4 特征提取
 
@@ -263,7 +285,7 @@ YOLOv2 中只有卷积层和池化层，所以对于输入图像的尺寸没有�
 - Anchor box x,y offset predictions.
 - Linear x,y predictions instead of logistic.
 - Focal loss.
-- Dual IOU thresholds and truth assignment.
+- Dual IOU thresholds and truth assignment. （上下界限阈值）
 
 
 
