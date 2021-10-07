@@ -180,7 +180,32 @@ $$
 
 ##### 2.5 Direct location prediction （预测绝对位置）
 
+$$
+b_x = \sigma(t_x) + c_x
+$$
 
+$$
+b_y = \sigma(t_y) + c_y
+$$
+
+$$
+b_w = p_we^{tw}
+$$
+
+$$
+b_h = p_he^{th}
+$$
+
+
+
+- 预测值为：
+
+$$
+t_x, t_y,t_w,t_h
+$$
+
+- 激活函数使用 sigmoid
+- Cx 和 Cy 分别表示网格坐标
 
 ##### 2.6 Fine-Grained Features （细粒度特征）
 
@@ -254,7 +279,7 @@ YOLOv3 相比前作只有较小改动，但性能取得了提升。
 
 ##### 2.1 检测框预测
 
-
+BBox 预测框计算方式和 YOLOv2 一样。
 
 ##### 2.2 分类预测
 
@@ -268,15 +293,27 @@ YOLOv3 相比前作只有较小改动，但性能取得了提升。
 
 ##### 2.3 多尺度预测
 
+参考 FPN 思想，对不同特征层进行融合后，并做预测。
 
+*YOLOv3 取3层特征层融合，然后在每个网格回归时选用3种尺寸的先验框，**共9种先验框**。*<u>【看代码验证】</u>
 
 ##### 2.4 特征提取
 
-##### 2.5 训练
+使用新的 backbone 网络 -- Darknet-53（参考了 ResNet 思想）。
+
+Darknet-53 对标 ResNet-101/152，在 ImageNet 上准确率持平，但效率更高。
 
 
 
-#### 3. 具体实现
+#### 3. 效果
+
+同期 SOTA 模型为 RetinaNet。
+
+YOLOv3 相比 YOLOv2， 小物体检测性能提升很多，但是仍然不及中大型物体。
+
+AP50 指标性能好。
+
+物体检测定位能力仍然是弱点。
 
 
 
@@ -291,7 +328,13 @@ YOLOv3 相比前作只有较小改动，但性能取得了提升。
 
 #### 5. 总结
 
-
+https://github.com/ultralytics/yolov3
+https://github.com/ultralytics/yolov3/wiki/Train-Custom-Data
+https://github.com/ultralytics/yolov5/wiki/Tips-for-Best-Training-Results
+https://www.cnblogs.com/pprp/p/12432540.html
+https://cloud.tencent.com/developer/article/1583429
+https://www.jianshu.com/p/d13ae1055302
+https://blog.csdn.net/leviopku/article/details/82660381
 
 
 
@@ -346,4 +389,3 @@ YOLOv3 相比前作只有较小改动，但性能取得了提升。
 
 
 #### 5.实验结果及总结
-
