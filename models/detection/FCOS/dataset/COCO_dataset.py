@@ -154,4 +154,3 @@ class COCODataset(CocoDetection):
         batch_imgs = torch.stack(pad_imgs_list)
 
         return batch_imgs, batch_boxes, batch_classes
-        

@@ -347,3 +347,64 @@ YOLOv3 相比前作只有较小改动，但性能取得了提升。
 
 #### 5.实验结果及总结
 
+
+
+### YOLOX
+
+#### 摘要
+
+
+
+#### 1.介绍
+
+https://matpool.com/blog/6125a42a5a27e902e6a03b74/
+https://zhuanlan.zhihu.com/p/411045300
+https://blog.csdn.net/u011622208/article/details/119146813
+
+#### 2.YOLOX <u>【基本结构 及 创新点】</u>
+
+2.1 
+
+**训练参数：**
+
+- COCO-2017
+- 300 epochs with 5 warmup epochs
+- SGD &  linear LR( lrxBS/64)
+- Batchsize: 128 with 8 GPU
+
+**基准模型：**
+
+- YOLOv3 (Darknet-53 + SPP)
+- EMA weights updating (EMA 权值更新)
+- Cosine lr schedule
+- IoU-aware branch (IoU感知分支) 
+- BCE Loss for cls and obj branch; IoU Loss for reg branch
+
+**解耦头（Decoupled head）**
+
+在目标检测中，分类与回归任务的冲突是一种常见问题。
+
+采用解耦头替换YOLO的检测头可以显著改善模型收敛速度
+
+**数据增强**
+
+- Mosaic -- YOLOv3 中被提出，后广泛应用
+
+- Mixup -- 最先被用于分类模型
+
+  1）使用以上增强手段，但是**在最后15个epoch关闭使用**。
+
+  2）**同时使用以上两个增强手段后，在 ImageNet 上的预训练就没有意义和效果了**。
+
+**Anchor-Free**
+
+
+
+#### 3.SOTA 模型比较
+
+
+
+#### 4.总结
+
+
+
