@@ -389,8 +389,6 @@ https://blog.csdn.net/leviopku/article/details/82660381
 
 
 #### 5.实验结果及总结
-<<<<<<< HEAD
-
 
 
 ### YOLOX
@@ -451,6 +449,3 @@ https://blog.csdn.net/u011622208/article/details/119146813
 #### 4.总结
 
 
-
-=======
->>>>>>> origin/main
