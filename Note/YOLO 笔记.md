@@ -342,25 +342,15 @@ https://blog.csdn.net/leviopku/article/details/82660381
 
 #### 摘要
 
-
-
 #### 1.介绍
-
-
 
 #### 2.相关工作
 
 ##### 2.1 目标检测模型
 
-
-
 ##### 2.2 Bag of Freebies
 
-
-
 ##### 2.3 Bag of Specials
-
-
 
 #### 3.方法论
 
@@ -371,8 +361,6 @@ https://blog.csdn.net/leviopku/article/details/82660381
 ##### 3.3 其他增强手段
 
 ##### 3.4 YOLOv4 结构及细节
-
-
 
 #### 4.实验
 
@@ -386,9 +374,9 @@ https://blog.csdn.net/leviopku/article/details/82660381
 
 ##### 4.5 批大小的影响
 
-
-
 #### 5.实验结果及总结
+
+
 
 
 ### YOLOX
@@ -440,6 +428,16 @@ https://blog.csdn.net/u011622208/article/details/119146813
 
 **Anchor-Free**
 
+YOLOv3/YOLOv4/YOLOv5 均采用相同的anchor设置，需要在训练之前进行聚类分析来确定最佳anchor集合。
+
+anchor-based的缺点：1）anchor集合对于数据集敏感，泛化性能差；2）增加了检测头复杂度。
+
+YOLOX 参考 FCOS 将每个位置的预测从3下降为1并直接预测四个值：即两个offset以及高宽；将每个目标的中心定位正样本，并预定义一个尺度范围以便于对每个目标对应不同的FPN特征层大小。
+
+**Multi positive**
+
+
+
 
 
 #### 3.SOTA 模型比较
@@ -447,5 +445,4 @@ https://blog.csdn.net/u011622208/article/details/119146813
 
 
 #### 4.总结
-
 
