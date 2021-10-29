@@ -391,6 +391,8 @@ https://matpool.com/blog/6125a42a5a27e902e6a03b74/
 https://zhuanlan.zhihu.com/p/411045300
 https://blog.csdn.net/u011622208/article/details/119146813
 
+https://mp.weixin.qq.com/s?__biz=MzI3MTA0MTk1MA==&mid=2652131121&idx=5&sn=da18c516fb73d080da83c267a3f0ac71&chksm=f1273bc0c650b2d6a9d1ccd5f5e51c6bd50dbaddbfde6cfb89e11c525d861405be334cc580f4&scene=4
+
 #### 2.YOLOX <u>【基本结构 及 创新点】</u>
 
 2.1 
