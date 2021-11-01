@@ -406,7 +406,7 @@ https://mp.weixin.qq.com/s?__biz=MzI3MTA0MTk1MA==&mid=2652131121&idx=5&sn=da18c5
 
 **基准模型：**
 
-- YOLOv3 (Darknet-53 + SPP)
+- YOLOv3 (Darknet-53 + SPP) -- AP值达到38.5 *【YOLOv3_ultralytics的Yolov3_spp版本AP值为44.3，为何不直接使用？】*
 - EMA weights updating (EMA 权值更新)
 - Cosine lr schedule
 - IoU-aware branch (IoU感知分支) 
