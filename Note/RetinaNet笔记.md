@@ -56,19 +56,66 @@
 #### Related Work
 
 - 传统分类器（特征提取+传统分类器）：特征提取（HOG / DPMs / sliding-window）；分类器（SVM / LR）
+
 - 二阶检测网络（特征提取+神经网络分类器）：特征提取（Selective Search / **RPN**）；分类器（**CNN**）
+
 - 一阶检测网络：OverFeature (the first) / YOLO / SSD
-- RetinaNet：Anchor-based / FPN
+
+- RetinaNet：Anchor-based + FPN
+
+- 类别不平衡（正负样本不平衡）：1）训练效率低，大量 Easy Negative 样本造成信息冗余，对模型性能提升没有用处；2）模型退化，Easy Negative 样本在训练过程中占主导位置。
+
+- 鲁棒性评估：设计损失函数需要考虑鲁棒性，一般会减低离群点(outliers)的权重（e.g. Huber loss）。
+
+  Focal Loss 的设计与常规设计相反，降低 Easy example(inliers)的权重，而聚焦在难样本上。
 
 
 
-Focal Loss
+#### Focal Loss
+
+- 目的：解决前景背景样本数量极度不平衡的问题（e.g. 1:1000）。
+- 基础：Binary Cross Entropy（BCE）
+
+$$
+CE(p,y) = \begin{cases}
+-log(p) & \text{if $$ y=1} \\ 
+-log(1-p) & otherwise 
+\end{cases}
+$$
+
+- 改进版：Balanced Cross Entropy 【引入参数alpha解决了**正负样本**不均衡，但没有解决**难易样本**不均衡】
+
+$$
+CE(p,y) = \begin{cases}
+-\alpha log(p) & \text{if $$ y=1} \\ 
+-(1-\alpha)log(1-p) & otherwise 
+\end{cases}
+$$
+
+- Focal Loss 定义 【引入参数gamma，解决了难易样本不平衡】（原实验中 gamma=2 效果最好）
+
+$$
+FL(p,y) = \begin{cases}
+-\alpha(1-p)^\gamma log(p) & \text{if $$ y=1} \\ 
+-(1-\alpha)p^\gamma log(1-p) & otherwise 
+\end{cases}
+$$
 
 
 
+#### RetinaNet Detector
+
+![](https://gitee.com/jchencp/notepics/raw/master/retinanet_structure.png)
+
+- Backone(ResNet) + Neck(FPN) + Head(classification + regression)
+
+- Anchor-based:
+
+  (1) ratios * sizes 
+
+  (2) IOU threshold
 
 
-RetinaNet Detector
 
 
 
