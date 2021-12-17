@@ -83,7 +83,7 @@ CE(p,y) = \begin{cases}
 \end{cases}
 $$
 
-- 改进版：Balanced Cross Entropy 【引入参数alpha解决了**正负样本**不均衡，但没有解决**难易样本**不均衡】
+- 改进版：Balanced Cross Entropy 【引入参数alpha解决了**正负样本**不均衡，但没有解决**难易样本**不均衡】（原实验中alpha=0.25效果较好，相当于1:3）
 
 $$
 CE(p,y) = \begin{cases}
@@ -91,6 +91,8 @@ CE(p,y) = \begin{cases}
 -(1-\alpha)log(1-p) & otherwise 
 \end{cases}
 $$
+
+​		小结：平衡了正负样本的数量，但实际上，目标检测中难易样本比例也很不平衡。更重要的是，容易样本数量很多且损失很小，会主导了总的损失函数。
 
 - Focal Loss 定义 【引入参数gamma，解决了难易样本不平衡】（原实验中 gamma=2 效果最好）
 
@@ -115,15 +117,30 @@ $$
 
   (2) IOU threshold
 
+- Inference and Training
+
+  (1) 推理 
+
+  (2) 初始化
+
+  (3) 优化
+
+
+
+#### Experiment
 
 
 
 
-Experiment
+
+#### Conclusion
 
 
 
-Conclusion
+#### 进一步启发点
+
+- 如何提高RetinaNet检测速度
+- 是否有必要使用所有的Anchors
 
 
 
