@@ -6,16 +6,46 @@
 # @brief      : 装饰器演示
 """
 '''
-Note:
+Note1:
 装饰器工作逻辑：当编译器遇到 @xxx 时，就会将原函数进行修饰。可以理解为原函数在编译阶段就被“替换”为装饰器返回的那个函数[decorator()]!
 
 @clock
 def foo(seconds):
+
 等价于 ==>
 
 def foo(seconds):
     pass
 foo = clock(foo)
+'''
+'''
+Note2:
+## 装饰器函数
+def a_new_decorator(a_func):
+    def wrapTheFunction():
+        print("Doing sth before executing a_func()")
+        a_func()
+        print("Doing sth after executing a_func()")
+    
+    return wrapTheFunction
+    
+####################################################
+## 被装饰的原函数
+def a_func_requiring_decoration():
+    print("I am the original function.")
+    
+## 原始调用方法
+a_func_requiring_decoration = a_new_decorator(a_func_requiring_decoration)  # 将原函数修饰并替换
+a_func_requiring_decoration()  # 调用
+
+------------------------------------------------------
+## 使用python语法糖
+@a_new_decorator
+def a_func_requiring_decoration():
+    print("I am the original function.")
+    
+a_func_requiring_decoration()  # 调用
+
 '''
 
 import time
