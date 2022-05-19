@@ -81,5 +81,52 @@ print(cfg.type)
 
 ## 5. 合并多个配置文件
 # 1）从 base 文件中合并
+# mmcv.Config 支持基于单个 base 配置文件，然后合并和汇总其余配置。
 
+# cfg.py 中的内容
+# _base_ = './base.py'
+# ...
 
+# 用法
+cfg = Config.fromfile('./cfg.py')
+
+# 2) 从多个 base 文件中合并
+# 只需将上述非 base 配置文件中将类似 _base_ = './base.py'改成 _base_ = ['./base.py',...] 即可。
+# base 文件的 key 是不允许改的，必须是 _base_ ，否则程序不知道哪个字段才是 base
+# 多个 base 以 list 方式并行构建模式下，不允许多个 base 文件中有相同字段，程序会报 Duplicate Key Error，因为此时不知道以哪个配置为主。
+
+# 3）合并字典到配置
+# 通过 cfg.merge_from_dict 函数接口可以实现对字典内容进行合并
+
+input_options = {'item2.a': 1, 'item2.b': 0.1, 'item3': False}
+cfg.merge_from_dict(input_options)
+
+# 4) allow_list_keys 参数
+# cfg.merge_from_dict(input_options, allow_list_keys=True)
+
+# 5）允许删除特定内容 -- 参数 _delete_ = True
+# 假设 base.py 中有如下 bbox 回归损失函数配置：
+# loss_bbox=dict(type='L1Loss', loss_weight=1.0，其他参数)
+# 若此时需要更换 Loss Function:
+loss_bbox=dict(
+    _delete_=True,  ## 关键参数，可以忽略 base 相关配置，直接采用新配置
+    type='IoULoss',
+    eps=1e-6,
+    loss_weight=1.0,
+    reduction='none')
+#####################################################
+
+## 6. pretty_text 和 dump
+# pretty_text 函数可以将字典内容按照 PEP8 格式打印，输出结构更加清晰。
+
+# 直接打印
+print(cfg._cfg_dict)
+# 输出
+# {'item1': [1, 2], 'item2': {'a': 1, 'b': 0.1}, 'item3': False, 'item4': 'test'}
+
+print(cfg.pretty_text)
+# 输出
+# item1 = [1, 2]
+# item2 = dict(a=1, b=0.1)
+# item3 = False
+# item4 = 'test'
